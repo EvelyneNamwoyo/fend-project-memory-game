@@ -11,8 +11,17 @@
 <body>
     <dialog id="displayWin">
         <div class="modal">
-            <p class="w3-animate-fading">You have won!!</p>
-            <button id="play_again">Play Again.</button>
+            <p class="w3-animate-fading">Congratulations, you have won!!</p>
+            <div>
+                Time: <span class="win-time"></span>
+            </div>
+            <div>
+                Rating: <span class="win-rating"></span>
+            </div>
+            <div>
+                <button id="play_again">Play Again.</button>
+            </div>
+            
         </div>
     </dialog>  
 
@@ -23,16 +32,16 @@
 
         <section class="score-panel">
         	<ul class="stars">
-        		<li><i class="fa fa-star"></i></li>
+        		<!-- <li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li>
                 <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li> -->
         	</ul>
 
-        	<span class="moves">8</span> Moves
+        	<span class="moves">0</span> Moves
             &nbsp;&nbsp;Timer:<span class="timer">00.00</span>
             <div class="restart">
-        		<i class="fa fa-repeat"></i>
+        		<i class="fa fa-repeat" onclick="initGame()"></i>
         	</div>
         </section>
 
