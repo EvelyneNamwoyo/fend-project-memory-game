@@ -12,7 +12,11 @@ let count = 0;
 let moves = 0;
 let times;
 let goodMoves = 0;
+let moveConter = document.querySelector('.moves');
+let timer = document.querySelector('.timer');
+let starwrapper = document.querySelector('.stars')
 
+/***********************************************************Creating the grid,placing cards on grid and playing the game******************************************** */
 // This function creates an html grid where the cards will be displayed
 function CreateCardGrid(card){
     return `<li class="card">
@@ -31,7 +35,7 @@ function createGameBoard(){
     }
 }
 
-// This functions tu
+// This functions flips over two cards at a time and checks whether they match
 function RevealCard(){
     allCards = document.querySelectorAll('.card');
     allCards.forEach(function(card){
@@ -108,15 +112,14 @@ Displays the win dialog and retsrts the game
 function checkComplete(){
     let dialog = document.getElementById('displayWin');
     let restart = document.getElementById('play_again');
+    let winTime = document.querySelector('.win-time');
+    let winRating = document.querySelector('.win-rating');
     if (goodMoves===8){
+        winTime.innerHTML = timer.innerHTML;
+        winRating.innerHTML = starwrapper.innerHTML;
         dialog.showModal();
         restart.addEventListener('click', function(){
             dialog.close();
-            count = 0;
-            times = 0;
-            moves = 0;
-            reset = document.querySelector('.deck');
-            reset.innerHTML = ' '
             // reset.innerHTML = createGameBoard();
             initGame();
         });
@@ -126,26 +129,42 @@ function checkComplete(){
 /*This function keeps track of the moves made by a player*/
 function Countmoves(){
     moves+=1;
-    const moveConter = document.querySelector('.moves')
     moveConter.innerHTML = moves;
 }
+/***********************************************************Code to manipulate the star ratings on the score panel******************************************** */
+// This function reduces the number of star ratings as the game goes on
 function removeStar(){
     const stars = document.querySelectorAll('.stars li');
         for(const star of stars){
             if(star.style.display !== 'none'){
-                console.log('hey')
                 star.style.display = 'none';
                 break;
 
             }
         }
 }
+// this function creates the html for the star ratings
+function createStarRatings(star){
+    return `<li><i class="${star}"></i></li>`;
+}
+// this fucntion displays the star ratings.
+resetStars = function(){
+    let ratings = ['fa fa-star','fa fa-star','fa fa-star','fa fa-star'];
+    for (const star of ratings){
+        let wrapper = document.createElement('ul');
+        wrapper.innerHTML = createStarRatings(star)
+        let li= wrapper.firstChild;
+        document.getElementsByClassName('stars')[0].appendChild(li);
+    }
+}
+// this function reduces the number of star 
+// ratings after a certain number of moves
 function addStars(){
     if(moves===4 || moves===8 || moves===16 || moves===24){
         removeStar();  
     }
 }
-
+/***********************************************************Code to manipulate the timing on the score panel******************************************** */
 // This function satrts the timer
 function startTiming(){
     times = setInterval(function(){ 
@@ -156,23 +175,35 @@ function startTiming(){
 // This functions picks seconds and minutes from the time counter and displays them.
 function addTime(){
     startTiming();
-    let timer = document.querySelector('.timer');
     let minutes = Math.floor(count/60);
     let seconds = Math.floor(count%60);
     timer.innerHTML = `${minutes}:${seconds}  `
 }
+/***********************************************************Initialising the game******************************************** */
 
-
-function stopTiming(){
-    clearInterval(times);
-}
 // This function starts the game
 function initGame(){
+    goodMoves = 0;
+    count = 0;
+    // this resets the moves to 0
+    moves = 0;
+    moveConter.innerHTML='0';
+
+    // resets timer to 0
+    times = 0;
+    timer.innerHTML = '00:00'
+
+    // this resets the star rating
+    starwrapper.innerHTML = ' ';
+    resetStars();
+
+    reset = document.querySelector('.deck');
+    reset.innerHTML = ' '
     createGameBoard();
     RevealCard();
 }
 
-
+/***********************************************************Code to shuffle cards******************************************** */
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
